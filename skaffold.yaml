@@ -1,0 +1,58 @@
+apiVersion: skaffold/v2alpha3
+kind: config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: kris/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: './auth/src/**/*.ts'
+            dest: .
+    - image: kris/client2
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: './client/**/*.js'
+            dest: .
+    - image: kris/ticket-2
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: './tickets/src/**/*.ts'
+            dest: .
+    - image: kris/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: './orders/src/**/*.ts'
+            dest: .
+    - image: kris/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: './expiration/src/**/*.ts'
+            dest: .
+    - image: kris/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: './payments/src/**/*.ts'
+            dest: .
